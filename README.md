@@ -15,7 +15,7 @@ Need some version of `Python3.9` in `$PythonPath` then use pipenv to install dep
 ```
     $PythonPath\python.exe -m pip install pipenv
     set PIPENV_VENV_IN_PROJECT="enabled"
-    pipenv install
+    pipenv install -d
     pipenv shell
     cd src
 ```
@@ -29,3 +29,9 @@ To use a conda environment and make it discoverable by Jupyter (EDA notebook or 
     python -m ipykernel install --user --name ami --display-name "AMI (python 3.9)"
 ```
 
+
+### Unit\Integration Tests
+Run unit tests locally
+```
+    python -m pytest tests/unit
+```
