@@ -40,8 +40,15 @@ if __name__ == '__main__':
 
     logger.info(f"Begin processing data for modeling")
 
-    train = pd.read_csv('data/train.csv')
-    test = pd.read_csv('data/train.csv')
+    try:
+        train = pd.read_csv('data/train.csv')
+        test = pd.read_csv('data/train.csv')
+    except FileNotFoundError as e:
+        msg = f"""Data not found!
+                  Please download data from Kaggle and place in src/data folder.
+                  See Setup section in README.md for more details.
+                """
+        raise ValueError(msg)
 
     DIR = Path("data")
     LABEL = "target"

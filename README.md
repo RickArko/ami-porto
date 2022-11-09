@@ -1,6 +1,8 @@
 # Porto Seguro
 Build a model that predicts the probability that a driver will initiate an auto insurance claim in the next year.
 
+## Setup
+Download data from the [kaggle competiton](https://www.kaggle.com/competitions/porto-seguro-safe-driver-prediction/data) and save in `src/data`.
 
 ## Criteria
 - Understanding of the business problem to be solved
