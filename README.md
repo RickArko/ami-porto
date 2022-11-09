@@ -35,3 +35,16 @@ Run unit tests locally
 ```
     python -m pytest tests/unit
 ```
+
+
+## Model Pipeline
+Scripts to be ran in sequence:
+1. `process.py` - process data for model development
+1. `baseline.py` - generate baseline model from example kernel
+1. `score.py` - score model vs. baseline and naive estimator
+
+```
+    pipenv run src/process.py
+    pipenv run src/baseline.py
+    pipenv run src/score.py
+```

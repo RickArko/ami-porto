@@ -2,6 +2,7 @@ from typing import List
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
+from loguru import logger
 
 
 def get_zero_variance_columns(df: pd.DataFrame) -> List[str]:
@@ -10,6 +11,8 @@ def get_zero_variance_columns(df: pd.DataFrame) -> List[str]:
 
 
 if __name__ == '__main__':
+
+    logger.info(f"Begin processing data for modeling")
 
     train = pd.read_csv('data/train.csv')
     test = pd.read_csv('data/train.csv')
@@ -30,3 +33,5 @@ if __name__ == '__main__':
     X_test.to_parquet("data/X_test.snap.parquet")
     y_train.to_frame().to_parquet("data/y_train.snap.parquet")
     y_test.to_frame().to_parquet("data/y_test.snap.parquet")
+
+    logger.info(f"Finished processing data for modeling")
