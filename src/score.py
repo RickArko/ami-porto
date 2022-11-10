@@ -14,10 +14,16 @@ PRED_MODEL = "pred"
 LABEL_MODEL = "pred_label"
 PLOT_DIR = Path("data").joinpath("plots")
 
-dfbase = pd.read_csv("data/baseline_predictions.csv").rename(
+DIR = Path("data")
+FNAME_BASE = DIR.joinpath("baseline_predictions_cv.csv")
+# FNAME_BASE = DIR.joinpath("data/baseline_predictions.csv")
+FNAME_MODEL = DIR.joinpath("prediction.snap.parquet")
+
+dfbase = pd.read_csv(FNAME_BASE).rename(
     columns={"pred": "pred_baseline", "pred_label": "label_baseline"}
 )
-dfpred = pd.read_parquet(Path("data").joinpath("prediction.snap.parquet"))
+
+dfpred = pd.read_parquet(FNAME_MODEL)
 dfbase = dfbase.merge(dfpred[["id"] + [PRED_MODEL, LABEL_MODEL]], on="id", how="inner")
 
 if __name__ == "__main__":
