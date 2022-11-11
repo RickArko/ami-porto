@@ -21,6 +21,8 @@ reading:
 - [intuitive-explanation](https://www.kaggle.com/code/batzner/gini-coefficient-an-intuitive-explanation)
 
 """
+
+
 def Gini(y_true: Union[np.array, pd.Series], y_pred: Union[np.array, pd.Series]) -> float:
     """Calculate Normalized Gini Coefficient between actuals and predictions.
 
@@ -51,3 +53,18 @@ def Gini(y_true: Union[np.array, pd.Series], y_pred: Union[np.array, pd.Series])
 
     # normalize to true Gini coefficient
     return G_pred * 1. / G_true
+
+
+def gini(actual, pred, cmpcol = 0, sortcol = 1):
+    assert( len(actual) == len(pred) )
+    all = np.asarray(np.c_[ actual, pred, np.arange(len(actual)) ], dtype=np.float)
+    all = all[ np.lexsort((all[:,2], -1*all[:,1])) ]
+    totalLosses = all[:,0].sum()
+    giniSum = all[:,0].cumsum().sum() / totalLosses
+
+    giniSum -= (len(actual) + 1) / 2.
+    return giniSum / len(actual)
+ 
+
+def gini_normalized(a, p):
+    return gini(a, p) / gini(a, a)
