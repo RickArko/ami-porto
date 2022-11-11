@@ -2,9 +2,27 @@ import numpy as np
 import pandas as pd
 from typing import Union
 
+"""This competition uses Normalized Gini Coefficient for Evaluation.
 
+The leaderboard ranges from:
+    1.   - .29698
+    .
+    .
+    1000 - .28986
+    .
+    .
+    3000 - .28001
+    
+A "good" score should be somewhere around .28-.29
+
+reading:
+
+- [implementation](https://www.kaggle.com/c/ClaimPredictionChallenge/discussion/703)
+- [intuitive-explanation](https://www.kaggle.com/code/batzner/gini-coefficient-an-intuitive-explanation)
+
+"""
 def Gini(y_true: Union[np.array, pd.Series], y_pred: Union[np.array, pd.Series]) -> float:
-    """Calculate Gini Coefficient between actuals and predictions.
+    """Calculate Normalized Gini Coefficient between actuals and predictions.
 
     Args:
         y_true (Union[np.array, pd.Series]): actuals
