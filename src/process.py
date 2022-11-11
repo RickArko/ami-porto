@@ -12,8 +12,8 @@ def get_zero_variance_columns(df: pd.DataFrame) -> List[str]:
     return df.columns[df.var() == 0].tolist()
 
 
-def process_data(df: pd.DataFrame, label: str) -> pd.DataFrame:
-    """Process input and return DataFrame for ML Modeling.
+def process_baseline_data(df: pd.DataFrame, label: str) -> pd.DataFrame:
+    """Process input and return DataFrame for Baseline-ML Model.
 
     Args:
         df (pd.DataFrame): input DataFrame (train | test)
@@ -26,10 +26,10 @@ def process_data(df: pd.DataFrame, label: str) -> pd.DataFrame:
     rows, cols = df.shape
     logger.info(f"Process input dataframe with {rows:,d} rows and {cols:,d} columns")
     columns = df.columns.tolist()
-    calc_features = [c for c in columns if "calc" in c]
+    # calc_features = [c for c in columns if "calc" in c]
+    # X = df.drop(calc_features, axis=1)
+    X = df.drop("id", axis=1)
 
-    X = df.drop(calc_features, axis=1)
-    
     if label in columns:
         desc = "train"
         logger.info(f"Drop {label} from training data")
@@ -64,9 +64,9 @@ if __name__ == '__main__':
     PATH_YTRAIN = DIR.joinpath("y_train.snap.parquet")
     PATH_XTEST = DIR.joinpath("X_test.snap.parquet")
 
-    X_train = process_data(train, LABEL)
+    X_train = process_baseline_data(train, LABEL)
     y_train = train[LABEL]
-    X_test = process_data(test, LABEL)
+    X_test = process_baseline_data(test, LABEL)
 
     assert X_train.shape[1] == X_test.shape[1], f"Columns mismatch in train/test data."
 

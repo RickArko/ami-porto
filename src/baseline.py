@@ -6,7 +6,7 @@ import pandas as pd
 from loguru import logger
 from sklearn.ensemble import GradientBoostingClassifier
 from sklearn.model_selection import GridSearchCV
-from src.process import load_train_test
+from src.process import load_train_test, process_baseline_data
 
 gb_params = {"n_estimators": [100, 200, 300], "learning_rate": [0.1, 0.2, 0.3], "max_depth": [3, 5, 7]}
 
@@ -24,10 +24,8 @@ if __name__ == "__main__":
     logger.info(f"Begin processing data for baseline model")
 
     train, test = load_train_test()
-    
-    X_train = pd.read_parquet("data/X_train.snap.parquet")
-    X_test = pd.read_parquet("data/X_test.snap.parquet")
-    y_train = pd.read_parquet("data/y_train.snap.parquet")[LABEL]
+    X_train = process_baseline_data(train, LABEL)
+    X_test = process_baseline_data(test, LABEL)
     submission = pd.read_csv("data/sample_submission.csv")
 
 
@@ -38,7 +36,7 @@ if __name__ == "__main__":
     FNAME_IN = "data/baseline_predictions_cv.csv"
 
     X_train = X_train.head(N)
-    y_train = y_train.head(N)
+    y_train = train[LABEL].head(N)
 
     logger.info(f"Train model with {X_train.shape[0]:,d} Samples")
 

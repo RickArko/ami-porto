@@ -1,7 +1,7 @@
 import unittest
 
 from tests.conftest import train
-from src.process import load_train_test, process_data
+from src.process import load_train_test, process_baseline_data
 
 
 class Test(unittest.TestCase):
@@ -14,13 +14,13 @@ class Test(unittest.TestCase):
         """Test basic fact."""
         self.assertTupleEqual(train.shape, (20, 59))
         
-    def test_process_data(self):
+    def test_process_baseline_data(self):
         train, test = load_train_test()
         self.assertTupleEqual(train.shape, (595_212, 59))
         self.assertTupleEqual(test.shape, (892_816, 58))
 
-        X_train = process_data(train, "target")
-        X_test = process_data(test, "target")
+        X_train = process_baseline_data(train, "target")
+        X_test = process_baseline_data(test, "target")
         
         self.assertNotEquals(X_train.shape[0], X_test.shape[0])
         self.assertListEqual(X_train.columns.tolist(), X_test.columns.tolist())
