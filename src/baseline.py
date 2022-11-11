@@ -35,12 +35,12 @@ if __name__ == "__main__":
     FNAME = "data/baseline_predictions.csv"
     FNAME_IN = "data/baseline_predictions_cv.csv"
 
-    X_train = X_train.head(N)
-    y_train = train[LABEL].head(N)
+    X_fit = X_train.head(N)
+    y_fit = train[LABEL].head(N)
 
-    logger.info(f"Train model with {X_train.shape[0]:,d} Samples")
+    logger.info(f"Train model with {X_fit.shape[0]:,d} Samples")
 
-    gb_grid.fit(X_train, y_train)
+    gb_grid.fit(X_fit, y_fit)
     best_params = gb_grid.best_estimator_.get_params()
     logger.info(f"Best Estimator Params:\n {pformat(best_params)}")
 
@@ -65,15 +65,10 @@ if __name__ == "__main__":
         warm_start=False,
     )
 
-    gb_opt.fit(X_train, y_train)
+    gb_opt.fit(X_fit, y_fit)
     test_y_gb = gb_opt.predict_proba(X_test)
 
     from sklearn.metrics import accuracy_score, classification_report, roc_auc_score
-
-    # dfout = test[["id", LABEL]].copy()
-    # dfout["pred"] = test_y_gb[:, 1]
-    # dfout["pred_label"] = np.where(dfout["pred"] > 0.5, 1, 0)
-    # dfout.to_csv(FNAME, index=False, float_format="%.4f")
 
     dfout = submission.copy()
     dfout["pred"] = test_y_gb[:, 1]
@@ -81,7 +76,7 @@ if __name__ == "__main__":
     dfout.to_csv(FNAME, index=False, float_format="%.4f")
     
     dfin = train[["id", LABEL]].copy()
-    dfin["pred"] = gb_opt.predict_proba(pd.read_parquet("data/X_train.snap.parquet"))[:,1]
+    dfin["pred"] = gb_opt.predict_proba(X_train)[:,1]
     dfin["pred_label"] = np.where(dfin["pred"] > 0.5, 1, 0)
     dfin.to_csv(FNAME_IN, index=False, float_format="%.4f")
 
