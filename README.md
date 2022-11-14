@@ -40,13 +40,7 @@ Run unit tests locally
 
 
 ## Model Pipeline
-Scripts to be ran in sequence:
-1. `process.py` - process data for model development
-1. `baseline.py` - generate baseline model from example kernel
-1. `score.py` - score model vs. baseline and naive estimator
+Execute `Pipeline.ipynb` to execute the Model building and Scoring notebooks.
 
-```
-    pipenv run src/process.py
-    pipenv run src/baseline.py
-    pipenv run src/score.py
-```
+** In order for scoring to work you'll need to run the Baseline model which takes over 2 hours.
+#### TODO: Export Baseline parameters or predictions so training is not necessary
