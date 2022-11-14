@@ -26,7 +26,11 @@ if __name__ == "__main__":
     train, test = load_train_test()
     X_train = process_baseline_data(train, LABEL)
     X_test = process_baseline_data(test, LABEL)
-    submission = pd.read_csv("data/sample_submission.csv")
+    
+    try:
+        submission = pd.read_csv("data/sample_submission.csv")
+    except Exception:
+        raise ValueError("Need to upload sample_submission from Kaggle to data/ directory")
 
 
     # Fit model with sample to reduce time
