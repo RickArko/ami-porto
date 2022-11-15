@@ -7,6 +7,18 @@ import pandas as pd
 import seaborn as sns
 from sklearn.metrics import accuracy_score, classification_report, roc_auc_score, roc_curve
 
+
+def load_predictions(fname):
+    _type = str(fname).split(".")[-1]
+    
+    if _type == "parquet":
+        df = pd.read_parquet(fname)
+    elif _type == "csv":
+        df = pd.read_csv(fname)
+    
+    return df
+
+
 LABEL = "target"
 LABEL_BASELINE = "label_baseline"
 PRED_BASELINE = "pred_baseline"
