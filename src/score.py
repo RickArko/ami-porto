@@ -32,24 +32,23 @@ FNAME_BASE = DIR.joinpath("baseline_predictions_cv.csv")
 FNAME_MODEL = DIR.joinpath("prediction.snap.parquet")
 FNAME_MODEL = DIR.joinpath("cv_scores.snap.parquet")
 
-dfbase = pd.read_csv(FNAME_BASE).rename(
-    columns={"pred": "pred_baseline", "pred_label": "label_baseline"}
-)
-
-THRESH = .03
-dfpred = pd.read_parquet(FNAME_MODEL)
-if "target" in dfpred.columns and PRED_MODEL not in dfpred.columns:
-    dfpred = dfpred.rename(columns={"target": PRED_MODEL})
-if LABEL_MODEL not in dfpred.columns:
-    dfpred[LABEL_MODEL] = np.where(dfpred[PRED_MODEL] >= THRESH, 1, 0)
-    
-dfscore = dfbase.merge(dfpred[["id"] + [PRED_MODEL, LABEL_MODEL]], on="id", how="inner")
 
 
 if __name__ == "__main__":
 
     os.makedirs(PLOT_DIR, exist_ok=True)
+    dfbase = pd.read_csv(FNAME_BASE).rename(
+    columns={"pred": "pred_baseline", "pred_label": "label_baseline"}
+    )
 
+    THRESH = .03
+    dfpred = pd.read_parquet(FNAME_MODEL)
+    if "target" in dfpred.columns and PRED_MODEL not in dfpred.columns:
+        dfpred = dfpred.rename(columns={"target": PRED_MODEL})
+    if LABEL_MODEL not in dfpred.columns:
+        dfpred[LABEL_MODEL] = np.where(dfpred[PRED_MODEL] >= THRESH, 1, 0)
+        
+    dfscore = dfbase.merge(dfpred[["id"] + [PRED_MODEL, LABEL_MODEL]], on="id", how="inner")
     dfscore["pred_naive"] = 0
 
     acc_naive = accuracy_score(dfscore[LABEL], dfscore["pred_naive"]) * 100
